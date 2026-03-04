@@ -1,3 +1,4 @@
+import re
 from typing import List
 import httpx
 
@@ -8,25 +9,23 @@ async def get_matrix(url: str) -> List[int]:
             res = await client.get(url, timeout=10.0)
             res.raise_for_status()
             
-            res = map(str, res.text)
-            res = map(lambda x: x.replace("-", "")
-                                .replace("+", "")
-                                .replace(" ","")
-                                .replace("\n\n","\n"),
-                res
-            )
-            res = "".join(list(res)).strip().split("\n")
-            res = list(filter(None, res))
-            res = list(map(lambda x: x.split("|"), res))
-            res = [[int(x) for x in y if x != ""] for y in res]
+            result = get_matrix_from_text(res)
             
-            return spiral(res)
+            return spiral(result)
         
         except httpx.HTTPStatusError as exc:
             raise RuntimeError(f"Server error: {exc}") from exc
         
         except httpx.RequestError as exc:
             raise RuntimeError(f"Network error: {exc}") from exc
+
+def get_matrix_from_text(res):
+    lines = res.text.split('\n')
+    result = []
+    for line in lines:
+        if numbers := re.findall(r'\d+', line):
+            result.append([int(x) for x in numbers])
+    return result
 
 
 def spiral(matrix: List[List[int]]) -> List[int]:

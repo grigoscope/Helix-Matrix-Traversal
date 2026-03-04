@@ -4,7 +4,7 @@ A lightweight Python library that:
 
 - Asynchronously fetches a square numerical matrix from a remote server via HTTP(S).
 - Parses the matrix from a custom text format (with borders and separators).
-- Returns a `List[int]` containing the result of a **counter-clockwise spiral traversal**, starting from the top-left corner.
+- Returns a `List[int]` containing the result of a **clockwise spiral traversal**, starting from the top-left corner (moving down the left edge first).
 
 This project is a solution to a technical assignment.
 
@@ -88,7 +88,7 @@ async def get_matrix(url: str) -> List[int]:
 ```
 
 - **Input**: A URL string pointing to a text-formatted matrix.
-- **Output**: A list of integers representing the counter-clockwise spiral traversal starting from the top-left element.
+- **Output**: A list of integers representing the clockwise spiral traversal starting from the top-left element (down → across bottom → up → across top).
 
 ### Input Format Requirements
 
